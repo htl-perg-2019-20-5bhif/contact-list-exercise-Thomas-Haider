@@ -9,6 +9,7 @@ namespace HUE_01_Haider.Controllers
 {
     [ApiController]
     [Route("contactList")]
+    // RS: Class name does not fit to file name
     public partial class ToDoController : ControllerBase
     {
 
@@ -18,11 +19,12 @@ namespace HUE_01_Haider.Controllers
         [Route("{name}", Name = "GetSpecificItem")]
         public IActionResult GetItem(string name)
         {
-
+            // Search by ID is required, not by name
             IEnumerable<Contact> searchByNameQuery =
                 from contact in contactList
                 where contact.firstName == name || contact.lastName == name
                 select contact;
+            // Consider .Any() instead of .Count() > 0
             if (searchByNameQuery.Count() > 0)
             {
                 return Ok(searchByNameQuery);
@@ -43,6 +45,7 @@ namespace HUE_01_Haider.Controllers
         public IActionResult AddItem([FromBody] Contact newItem)
         {
             contactList.Add(newItem);
+            // Controller name inconsistency (called "GetSpecificItem" above)
             return CreatedAtRoute("GetSpecificTodoItem", new { index = contactList.IndexOf(newItem) }, newItem);
         }
 
